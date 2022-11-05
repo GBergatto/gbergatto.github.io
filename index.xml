@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>GBergatto</title>
+    <link>http://gbergatto.github.io/</link>
+    <description>Recent content on GBergatto</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 05 Nov 2022 22:31:45 +0100</lastBuildDate><atom:link href="http://gbergatto.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hello World</title>
+      <link>http://gbergatto.github.io/posts/hello-world/</link>
+      <pubDate>Sat, 05 Nov 2022 22:31:45 +0100</pubDate>
+      
+      <guid>http://gbergatto.github.io/posts/hello-world/</guid>
+      <description>This is my first post!
+I&amp;rsquo;m just making sure that everything is set up correctly before I start producing something more meaningful. More content will follow soon.</description>
+    </item>
+    
+  </channel>
+</rss>
