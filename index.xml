@@ -6,7 +6,19 @@
     <description>Recent content on GBergatto</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 05 Nov 2022 22:31:45 +0100</lastBuildDate><atom:link href="http://gbergatto.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 26 Nov 2022 11:51:30 +0100</lastBuildDate><atom:link href="http://gbergatto.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Who? What? Where? When? Why?</title>
+      <link>http://gbergatto.github.io/posts/who-what-where-when-why/</link>
+      <pubDate>Sat, 26 Nov 2022 11:51:30 +0100</pubDate>
+      
+      <guid>http://gbergatto.github.io/posts/who-what-where-when-why/</guid>
+      <description>Who am I? My real name is Guglielmo, but you can call me Berga. I&amp;rsquo;m 20 years old, live in Italy, and study computer science at Politecnico di Torino.
+What is this blog about? I&amp;rsquo;m exploring the vast field of computer science to figure out what interests me the most. I&amp;rsquo;ll share what I learn along the journey in this blog.
+Topics I will cover include:
+Programming Cybersecurity and hacking Competitive programming and CTFs Linux: customization and workflows Obsidian: how I use it to study and take notes Where can you find it/me?</description>
+    </item>
+    
     <item>
       <title>Hello World</title>
       <link>http://gbergatto.github.io/posts/hello-world/</link>
