@@ -1,0 +1,3 @@
+User-agent: *
+Disallow:
+Sitemap: http://gbergatto.github.io/sitemap.xml
