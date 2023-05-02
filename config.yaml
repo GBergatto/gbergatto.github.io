@@ -1,0 +1,38 @@
+baseURL: 'http://gbergatto.github.io/'
+languageCode: en-us
+title: GBergatto
+theme: PaperMod
+
+enableRobotsTXT: true
+buildDrafts: false
+buildFuture: false
+buildExpired: false
+
+params:
+  homeInfoParams:
+    Title: Hi there
+    Content: Welcome to my blog
+
+  # https://github.com/adityatelange/hugo-PaperMod/wiki/Features#home-info-mode
+  socialIcons: # optional
+        - name: "github"
+          url: "https://github.com/GBergatto"
+        - name: "Rss"
+          url: "https://gbergatto.github.io/index.xml"
+  assets:
+    favicon: "/favicon.ico"
+    favicon16x16:  "/favicon-16x16.png?"
+    favicon32x32:  "/favicon-32x32.png?"
+    apple_touch_icon:  "/apple-touch-icon.png?"
+    safari_pinned_tab:  "/safari-pinned-tab.svg?"
+
+menu:
+  main:
+    - identifier: tags
+      name: Tags
+      url: /tags/
+      weight: 1
+    - identifier: about
+      name: About Me
+      url: /about/
+      weight: 2
