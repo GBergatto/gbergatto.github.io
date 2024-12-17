@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Dotfiles on GBergatto</title><link>http://gbergatto.github.io/tags/dotfiles/</link><description>Recent content in Dotfiles on GBergatto</description><generator>Hugo -- 0.139.2</generator><language>en-us</language><lastBuildDate>Tue, 17 Dec 2024 15:14:49 +0100</lastBuildDate><atom:link href="http://gbergatto.github.io/tags/dotfiles/index.xml" rel="self" type="application/rss+xml"/><item><title>Exploring Tools For Managing Your Dotfiles</title><link>http://gbergatto.github.io/posts/tools-managing-dotfiles/</link><pubDate>Tue, 17 Dec 2024 15:14:49 +0100</pubDate><guid>http://gbergatto.github.io/posts/tools-managing-dotfiles/</guid><description>&lt;p>It’s been almost 2 years since I installed Arch on my laptop, and I feel like
+my dotfiles are becoming more and more disorganized. I still have configuration
+files from programs I no longer use, and keeping track of how I customize the
+ones I do use is taking far more effort than it should. To address this, I’ve
+decided to put my dotfiles under version control, so I can have a clearer view
+of how they change over time.&lt;/p></description></item></channel></rss>

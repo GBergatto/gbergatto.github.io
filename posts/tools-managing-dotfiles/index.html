@@ -1,0 +1,193 @@
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Exploring Tools For Managing Your Dotfiles | GBergatto</title>
+<meta name=keywords content="Dotfiles"><meta name=description content="It’s been almost 2 years since I installed Arch on my laptop, and I feel like
+my dotfiles are becoming more and more disorganized. I still have configuration
+files from programs I no longer use, and keeping track of how I customize the
+ones I do use is taking far more effort than it should. To address this, I’ve
+decided to put my dotfiles under version control, so I can have a clearer view
+of how they change over time."><meta name=author content><link rel=canonical href=http://gbergatto.github.io/posts/tools-managing-dotfiles/><link crossorigin=anonymous href=/assets/css/stylesheet.d6fcd20a4fb86efa4dfac8ec95da60244cc8871042183da1ef28e3a762ad79c8.css integrity="sha256-1vzSCk+4bvpN+sjsldpgJEzIhxBCGD2h7yjjp2Ktecg=" rel="preload stylesheet" as=style><link rel=icon href=http://gbergatto.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=http://gbergatto.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=http://gbergatto.github.io/favicon-32x32.png><link rel=apple-touch-icon href=http://gbergatto.github.io/apple-touch-icon.png><link rel=mask-icon href=http://gbergatto.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=http://gbergatto.github.io/posts/tools-managing-dotfiles/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><meta property="og:url" content="http://gbergatto.github.io/posts/tools-managing-dotfiles/"><meta property="og:site_name" content="GBergatto"><meta property="og:title" content="Exploring Tools For Managing Your Dotfiles"><meta property="og:description" content="It’s been almost 2 years since I installed Arch on my laptop, and I feel like my dotfiles are becoming more and more disorganized. I still have configuration files from programs I no longer use, and keeping track of how I customize the ones I do use is taking far more effort than it should. To address this, I’ve decided to put my dotfiles under version control, so I can have a clearer view of how they change over time."><meta property="og:locale" content="en-us"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2024-12-17T15:14:49+01:00"><meta property="article:modified_time" content="2024-12-17T15:14:49+01:00"><meta property="article:tag" content="Dotfiles"><meta name=twitter:card content="summary"><meta name=twitter:title content="Exploring Tools For Managing Your Dotfiles"><meta name=twitter:description content="It’s been almost 2 years since I installed Arch on my laptop, and I feel like
+my dotfiles are becoming more and more disorganized. I still have configuration
+files from programs I no longer use, and keeping track of how I customize the
+ones I do use is taking far more effort than it should. To address this, I’ve
+decided to put my dotfiles under version control, so I can have a clearer view
+of how they change over time."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"http://gbergatto.github.io/posts/"},{"@type":"ListItem","position":2,"name":"Exploring Tools For Managing Your Dotfiles","item":"http://gbergatto.github.io/posts/tools-managing-dotfiles/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Exploring Tools For Managing Your Dotfiles","name":"Exploring Tools For Managing Your Dotfiles","description":"It’s been almost 2 years since I installed Arch on my laptop, and I feel like my dotfiles are becoming more and more disorganized. I still have configuration files from programs I no longer use, and keeping track of how I customize the ones I do use is taking far more effort than it should. To address this, I’ve decided to put my dotfiles under version control, so I can have a clearer view of how they change over time.\n","keywords":["Dotfiles"],"articleBody":"It’s been almost 2 years since I installed Arch on my laptop, and I feel like my dotfiles are becoming more and more disorganized. I still have configuration files from programs I no longer use, and keeping track of how I customize the ones I do use is taking far more effort than it should. To address this, I’ve decided to put my dotfiles under version control, so I can have a clearer view of how they change over time.\nHowever, with so many options available, picking the right tool for the job isn’t as straightforward as it seems. This article compares different solutions, outlining the pros and cons of each, to help you (and me) choose the one that best fits our needs.\nTwo main strategies A quick search online will provide you with a number of different tools, but most of them can be categorized into one of two camps:\nA Git repository in your home directory Symlinks The first approach is fairly straightforward, as it simply involves placing a Git repository in your home directory and tracking your dotfiles directly from there.\nThe second approach introduces a bit more overhead, as it requires moving all your dotfiles to a designated directory (which will also house the Git repository) and using symlinks to make them appear where the operating system expects to find them.\nFor example, you could move your .bashrc to the ~/dotfiles directory and then create a symlink that points to it in your home directory using the following command.\nln -s ~/dotfiles/.bashrc ~/.bashrc Configuring a new machine from scratch can become quite tedious due to the large number of symlinks involved, but the process can be automated to varying degrees, depending on the tool used.\nBare Git repository The most minimal way to turn your entire home directory into a git repository (first approach) is to use a bare Git repository.\nThis guide already provides a pretty clear explanation, so I will just point out that the bare repository (.cfg in the tutorial) must not be added to itself. I will also reassure you that the bare repository won’t interfere with any other repository you might have inside your HOME directory.\nPros and cons This is the simplest approach available, but it comes with the risk of exposing sensitive information by inadvertently pushing files to your potentially public dotfiles repository.\nGNU Stow One tool for managing symlinks is GNU Stow. To understand how it works, let’s start by defining a few terms:\nA package is a collection of files and directories that you want to manage as a unit. The target directory is where you want all packages to appear to be installed. A stow directory is the directory containing all your packages. For each package, Stow creates a symlink in the target directory that points to the corresponding directory in the stow directory. To make things easier to understand, let’s look at an example. This is just a quick overview of the main functionality of the tool to help you determine if it resonates with you. For more details, feel free to check out the docs.\nManaging multiple packages Let’s say I want to manage of my .bashrc and Neovim config keeping them in two separate packages for reasons that will become clear in a moment.\n/home/gb ├── .config │ └── nvim │ └── init.lua └── .bashrc Each package must mimic the tree structure of the target directory, which, in our case, is the home directory.\ndotfiles/ ├── bash │ └── .bashrc └── neovim └── .config └── nvim └── init.lua While in the stow directory (in our case ~/dotfiles), run stow neovim and stow bash to create symlinks the two packages inside the home directory. To install all packages defined in the stow directory, run stow *.\nBy default the target directory is the parent of the stow directory (the one where the stow command is run), but this can be overridden with the --target flag.\ndotfiles ├── .bashrc -\u003e dotfiles/bash/.bashrc ├── .config -\u003e dotfiles/neovim/.config └── dotfiles ├── bash │ └── .bashrc └── neovim └── .config └── nvim └── init.lua Notice that ~/.config is a symlink to the .config directory inside the neovim package. If we were to add another package that uses the .config directory, ~/.config would become an actual directory and the symlinks would be moved into it.\n/home/gb ├── .bashrc -\u003e dotfiles/bash/.bashrc ├── .config │ ├── nvim -\u003e ../dotfiles/neovim/.config/nvim │ └── qtile -\u003e ../dotfiles/qtile/.config/qtile └── dotfiles ├── bash │ └── .bashrc ├── neovim │ └── .config │ └── nvim │ └── init.lua └── qtile └── .config └── qtile └── config.py This happens because Stow minimizes the number of symlinks necessary to mirror the contents of all packages into the target directory.\nAdding new files To keep track of new config files, you need to manually move them into your package of choice.\nFor example, if I started using Zsh alongside Bash and wanted to keep track of my .zshrc in a new package, I would run the following commands.\ncd ~/dotfiles mkdir zshell cp ~/.zshrc zshell stow zshell --adopt Not using the --adopt flag would result in the following message.\nWARNING! stowing zshell would cause conflicts: * cannot stow dotfiles/zshell/.zshrc over existing target .zshrc since neither a link nor a directory and --adopt not specified With the --adopt flag, Stow updates the copy of .zshrc in the zshell package with the target directory.\nThis is particularly useful when you are installing your dotfiles on a new system and your stow directory is under version control because you can run git diff to how the copy in the target directory differs from the one in your dotfiles repository and then decide how to deal with the changes.\nTo avoid the conflict all together, you could use mv instead of cp to move the .zshrc out of the home directory and into the zshell package, but I needed an excuse to tell you about the --adopt flag.\nPros and cons One of the main benefits of GNU Stow is the ability to independently manage dotfiles for different programs by keeping them in separate packages. This allows you to choose which packages you want to clone on each machine to avoid cluttering up your workspace with useless dotfiles.\nWhile it might sound a bit confusing at first, it becomes pretty intuitive once you start using it. However, the rule that each package must mimic the original directory structure will result in a lot of empty directories, which you may find annoying. For an example of how a dotfiles repositories managed with GNU Stow looks link, you can take a look at this one on GitHub. In addition, this means that anybody who might want to use your dotfiles would also have to start using this tool.\nAnother disadvantage is the difficulty in migrating away from it. Because the stow command only creates symlinks, you will have to manually move all dotfiles to their original location.\nYADM YADM is a Git wrapper designed to keep your dotfiles under version control without having to create any symlink. Under the hood, it still uses a bare Git repository, which can be found in ~/.local/share/yadm/repo.git, but it spares you the trouble of creating it yourself and defining an alias to go along with it.\nIt also has some more advanced features, such as alternate files, templates, encryption, and the the ability to define scripts that run automatically. However, I haven’t explored any of these features myself, so I recommend reading the official documentation for more detailed information.\nIgnoring files By default YADM ignores untracked files when displaying the status. Changing this behavior is not a good idea as it would significantly slow down the command.\nIf you add a .gitignore file to your home directory (or its subdirectories), YADM will ignore these patters exactly as Git would. Add these .gitignore files to your repository to have them synced across devices.\nPersonally, I prefer to have multiple .gitignore files inside each subdirectory instead of a single one in the home directory. For example, I use this approach to ignore the __pycache__ directory inside the Qtile config directory.\n/home/gb/.config/qtile ├── .gitignore \u003c-- \"__pycache__\" ├── __pycache__ │ └── ... ├── config.py └── modules ├── __init__.py ├── __pycache__ │ ├── ... │ └── ... ├── common.py ├── ... └── utils.py Another option is to add patterns to $HOME/.local/share/yadm/repo.git/info/exclude only meant for local configuration but this couldn’t be synced across devices because you cannot add the bare repo to itself\nAdding Git submodules If you want to add a directory that already contains a Git repository inside of it, you have to add it as a submodule with the following command\nyadm submodule add where path is the directory with the Git repository inside of it and repository_url is the URL to a remote server (like GitHub or GitLab) where the repository is available so that future clones of the dotfiles repository will be able to find the submodule and fetch its content.\nPros and cons The main benefit of this tool is that it’s essentially just a Git wrapper. Its main drawback is that it’s just a Git wrapper. On a more serious note, if you’re familiar with Git, you’ll automatically know how to use YADM, but there are definitely more user-friendly options out there.\nAnother minor nitpick is that if your dotfiles repository includes a README, it will clutter up your home directory. I’ve found a potential solution on GitHub, but I haven’t managed to implement it yet. I might write a short follow-up post about it once I get it to work.\nChezmoi Chezmoi is a tool written in Go specifically designed for (quoting their homepage) managing your dotfiles across multiple diverse machines, securely. It’s very easy to use and extremely well documented, so I will you refer you to the official quick start guide.\nThis tool creates a copy of the files you want to track to the .local/share/chemoiz directory, which you can reach via the chezmoi cd command. There are several ways to edit files, but the two main strategies are either to use the chezmoi edit command, or to edit the original file and then add it back with the chezmoi add command.\nWhere Chezmoi really shine is managing dotifiles across multiple machines running different operating systems. Also, like YADM, it provides scripts that can run when certain commands are executed and encryption to protect secrets. Again, I haven’t tested any of these more advanced features as they go beyond my current needs.\nIgnoring files To tell Chezmoi to ignore specific files or directories, you can either use .chezmoiignore files, which work almost like .gitignore files except for some minor differences around pattern matching.\nA .chezmoiignore located in a directory will only be applied from that directory downwards (just like YADM). Alternatively, you can have a global .chezmoiignore by putting it in the Chezmoi directory. Compared to YADM, this has the advantage of not cluttering your home directory with a .gitignore file.\nPros and cons Chezmoi has a lot going for it, starting with great documentation and a very active community. It’s probably the most user-friendly and feature-rich tool on this list, so if you need the advanced features it offers or just want to go with the safest option, this is probably it.\nIf I had to find a downside, it would probably be the renaming of files with the dot_ prefix. Similar to GNU Stow, this forces anyone who wants to use your dotfiles to install it. The advantage here is that, since the dotfiles are actual files rather than symlinks, you can stop using Chezmoi at any point without needing to take any further action.\nConclusion As spoiled in the section about it, I’ve already started using YADM because it seemed like the most minimal solution that doesn’t require me to manually manage a bare Git repository, which felt a bit hacky. I have a natural tendency to avoid bloat and prefer the most minimal option available, even if it requires sacrificing some user-friendliness. After all, I use Arch for a reason.\nChezmoi feels a bit overkill for the task at hand—at least in my current situation, where I simply need to manage the dotfiles on my laptop. That said, I can see myself adopting this tool when my setup becomes more complex, hopefully in the not-too-distant future.\n","wordCount":"2066","inLanguage":"en","datePublished":"2024-12-17T15:14:49+01:00","dateModified":"2024-12-17T15:14:49+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://gbergatto.github.io/posts/tools-managing-dotfiles/"},"publisher":{"@type":"Organization","name":"GBergatto","logo":{"@type":"ImageObject","url":"http://gbergatto.github.io/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=http://gbergatto.github.io/ accesskey=h title="GBergatto (Alt + H)">GBergatto</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=http://gbergatto.github.io/tags/ title=Tags><span>Tags</span></a></li><li><a href=http://gbergatto.github.io/about/ title="About Me"><span>About Me</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">Exploring Tools For Managing Your Dotfiles</h1><div class=post-meta><span title='2024-12-17 15:14:49 +0100 +0100'>December 17, 2024</span></div></header><div class=post-content><p>It’s been almost 2 years since I installed Arch on my laptop, and I feel like
+my dotfiles are becoming more and more disorganized. I still have configuration
+files from programs I no longer use, and keeping track of how I customize the
+ones I do use is taking far more effort than it should. To address this, I’ve
+decided to put my dotfiles under version control, so I can have a clearer view
+of how they change over time.</p><p>However, with so many options available, picking the right tool for the job
+isn’t as straightforward as it seems. This article compares different
+solutions, outlining the pros and cons of each, to help you (and me) choose the
+one that best fits our needs.</p><h2 id=two-main-strategies>Two main strategies<a hidden class=anchor aria-hidden=true href=#two-main-strategies>#</a></h2><p>A quick search online will provide you with a number of different tools, but
+most of them can be categorized into one of two camps:</p><ol><li>A Git repository in your home directory</li><li>Symlinks</li></ol><p>The first approach is fairly straightforward, as it simply involves placing a
+Git repository in your home directory and tracking your dotfiles directly from
+there.</p><p>The second approach introduces a bit more overhead, as it requires moving all
+your dotfiles to a designated directory (which will also house the Git repository) and using symlinks to make them appear where the operating
+system expects to find them.</p><p>For example, you could move your <code>.bashrc</code> to the <code>~/dotfiles</code> directory and
+then create a symlink that points to it in your home directory using the
+following command.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>ln -s ~/dotfiles/.bashrc ~/.bashrc
+</span></span></code></pre></div><p>Configuring a new machine from scratch can become quite tedious due to the large number of symlinks involved, but the process can be automated to varying degrees, depending on the tool used.</p><h2 id=bare-git-repository>Bare Git repository<a hidden class=anchor aria-hidden=true href=#bare-git-repository>#</a></h2><p>The most minimal way to turn your entire home directory into a git repository (first approach) is to use a bare Git repository.</p><p><a href=https://www.atlassian.com/git/tutorials/dotfiles>This guide</a> already provides a pretty clear explanation, so I will just point out that the bare repository (<code>.cfg</code> in the tutorial) must not be added to itself. I will also reassure you that the bare repository won&rsquo;t interfere with any other repository you might have inside your HOME directory.</p><h3 id=pros-and-cons>Pros and cons<a hidden class=anchor aria-hidden=true href=#pros-and-cons>#</a></h3><p>This is the simplest approach available, but it comes with the risk of exposing sensitive information by inadvertently pushing files to your potentially public dotfiles repository.</p><h2 id=gnu-stow>GNU Stow<a hidden class=anchor aria-hidden=true href=#gnu-stow>#</a></h2><p>One tool for managing symlinks is <a href=https://www.gnu.org/software/stow/>GNU
+Stow</a>. To understand how it works, let&rsquo;s
+start by defining a few terms:</p><ul><li>A <strong>package</strong> is a collection of files and directories that you want to manage as a unit.</li><li>The <strong>target directory</strong> is where you want all packages to appear to be installed.</li><li>A <strong>stow directory</strong> is the directory containing all your packages.</li></ul><p>For each package, Stow creates a symlink in the target directory that points to
+the corresponding directory in the stow directory. To make things easier to
+understand, let’s look at an example. This is just a quick overview of the main
+functionality of the tool to help you determine if it resonates with you. For
+more details, feel free to check out the
+<a href=https://www.gnu.org/software/stow/manual/stow.html>docs</a>.</p><h3 id=managing-multiple-packages>Managing multiple packages<a hidden class=anchor aria-hidden=true href=#managing-multiple-packages>#</a></h3><p>Let&rsquo;s say I want to manage of my <code>.bashrc</code> and Neovim config keeping them in
+two separate packages for reasons that will become clear in a moment.</p><pre tabindex=0><code>/home/gb
+├── .config
+│   └── nvim
+│       └── init.lua
+└── .bashrc
+</code></pre><p>Each package must mimic the tree structure of the target directory, which, in
+our case, is the home directory.</p><pre tabindex=0><code>dotfiles/
+├── bash
+│   └── .bashrc
+└── neovim
+    └── .config
+        └── nvim
+            └── init.lua
+</code></pre><p>While in the stow directory (in our case <code>~/dotfiles</code>), run <code>stow neovim</code> and
+<code>stow bash</code> to create symlinks the two packages inside the home directory. To
+install all packages defined in the stow directory, run <code>stow *</code>.</p><p>By default the target directory is the parent of the stow directory (the one
+where the <code>stow</code> command is run), but this can be overridden with the
+<code>--target</code> flag.</p><pre tabindex=0><code>dotfiles
+├── .bashrc -&gt; dotfiles/bash/.bashrc
+├── .config -&gt; dotfiles/neovim/.config
+└── dotfiles
+    ├── bash
+    │   └── .bashrc
+    └── neovim
+        └── .config
+            └── nvim
+                └── init.lua
+</code></pre><p>Notice that <code>~/.config</code> is a symlink to the <code>.config</code> directory inside the
+<code>neovim</code> package. If we were to add another package that uses the <code>.config</code>
+directory, <code>~/.config</code> would become an actual directory and the symlinks would
+be moved into it.</p><pre tabindex=0><code>/home/gb
+├── .bashrc -&gt; dotfiles/bash/.bashrc
+├── .config
+│   ├── nvim -&gt; ../dotfiles/neovim/.config/nvim
+│   └── qtile -&gt; ../dotfiles/qtile/.config/qtile
+└── dotfiles
+    ├── bash
+    │   └── .bashrc
+    ├── neovim
+    │   └── .config
+    │       └── nvim
+    │           └── init.lua
+    └── qtile
+        └── .config
+            └── qtile
+                └── config.py
+</code></pre><p>This happens because Stow minimizes the number of symlinks necessary to mirror
+the contents of all packages into the target directory.</p><h3 id=adding-new-files>Adding new files<a hidden class=anchor aria-hidden=true href=#adding-new-files>#</a></h3><p>To keep track of new config files, you need to manually move them into your
+package of choice.</p><p>For example, if I started using Zsh alongside Bash and wanted to keep track of
+my <code>.zshrc</code> in a new package, I would run the following commands.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>cd ~/dotfiles
+</span></span><span style=display:flex><span>mkdir zshell
+</span></span><span style=display:flex><span>cp ~/.zshrc zshell
+</span></span><span style=display:flex><span>stow zshell --adopt
+</span></span></code></pre></div><p>Not using the <code>--adopt</code> flag would result in the following message.</p><pre tabindex=0><code>WARNING! stowing zshell would cause conflicts:
+  * cannot stow dotfiles/zshell/.zshrc over existing target .zshrc since neither a link nor a directory and --adopt not specified
+</code></pre><p>With the <code>--adopt</code> flag, Stow updates the copy of <code>.zshrc</code> in the <code>zshell</code>
+package with the target directory.</p><p>This is particularly useful when you are installing your dotfiles on a new
+system and your stow directory is under version control because you can run
+<code>git diff</code> to how the copy in the target directory differs from the one in your
+dotfiles repository and then decide how to deal with the changes.</p><p>To avoid the conflict all together, you could use <code>mv</code> instead of <code>cp</code> to move
+the <code>.zshrc</code> out of the home directory and into the <code>zshell</code> package, but I
+needed an excuse to tell you about the <code>--adopt</code> flag.</p><h3 id=pros-and-cons-1>Pros and cons<a hidden class=anchor aria-hidden=true href=#pros-and-cons-1>#</a></h3><p>One of the main benefits of GNU Stow is the ability to independently manage
+dotfiles for different programs by keeping them in separate packages. This
+allows you to choose which packages you want to clone on each machine to avoid
+cluttering up your workspace with useless dotfiles.</p><p>While it might sound a bit confusing at first, it becomes pretty intuitive once
+you start using it. However, the rule that each package must mimic the original
+directory structure will result in a lot of empty directories, which you may
+find annoying. For an example of how a dotfiles repositories managed with GNU
+Stow looks link, you can take a look at <a href=https://github.com/xero/dotfiles>this
+one</a> on GitHub. In addition, this means that
+anybody who might want to use your dotfiles would also have to start using this
+tool.</p><p>Another disadvantage is the difficulty in migrating away from it. Because the
+<code>stow</code> command only creates symlinks, you will have to manually move all
+dotfiles to their original location.</p><h2 id=yadm>YADM<a hidden class=anchor aria-hidden=true href=#yadm>#</a></h2><p>YADM is a Git wrapper designed to keep your dotfiles under version control
+without having to create any symlink. Under the hood, it still uses a bare Git
+repository, which can be found in <code>~/.local/share/yadm/repo.git</code>, but it spares
+you the trouble of creating it yourself and defining an alias to go along with
+it.</p><p>It also has some more advanced features, such as alternate files, templates,
+encryption, and the the ability to define scripts that run automatically.
+However, I haven&rsquo;t explored any of these features myself, so I recommend
+reading the <a href=https://yadm.io/docs/getting_started>official documentation</a>
+for more detailed information.</p><h3 id=ignoring-files>Ignoring files<a hidden class=anchor aria-hidden=true href=#ignoring-files>#</a></h3><p>By default YADM ignores untracked files when displaying the status. Changing
+this behavior is not a good idea as it would significantly slow down the
+command.</p><p>If you add a <code>.gitignore</code> file to your home directory (or its subdirectories),
+YADM will ignore these patters exactly as Git would. Add these
+ <code>.gitignore</code> files to your repository to have them synced across devices.</p><p>Personally, I prefer to have multiple <code>.gitignore</code> files inside each
+subdirectory instead of a single one in the home directory. For example, I use
+this approach to ignore the <code>__pycache__</code> directory inside the
+<a href=https://qtile.org/>Qtile</a> config directory.</p><pre tabindex=0><code>/home/gb/.config/qtile
+├── .gitignore &lt;-- &#34;__pycache__&#34;
+├── __pycache__
+│   └── ...
+├── config.py
+└── modules
+    ├── __init__.py
+    ├── __pycache__
+    │   ├── ...
+    │   └── ...
+    ├── common.py
+    ├── ...
+    └── utils.py
+</code></pre><p>Another option is to add patterns to <code>$HOME/.local/share/yadm/repo.git/info/exclude</code>
+only meant for local configuration but this couldn&rsquo;t be synced across devices
+because you cannot add the bare repo to itself</p><h3 id=adding-git-submodules>Adding Git submodules<a hidden class=anchor aria-hidden=true href=#adding-git-submodules>#</a></h3><p>If you want to add a directory that already contains a Git repository inside of
+it, you have to add it as a submodule with the following command</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>yadm submodule add &lt;repository_url&gt; &lt;path&gt;
+</span></span></code></pre></div><p>where <code>path</code> is the directory with the Git repository inside of it and
+<code>repository_url</code> is the URL to a remote server (like GitHub or GitLab) where
+the repository is available so that future clones of the dotfiles repository
+will be able to find the submodule and fetch its content.</p><h3 id=pros-and-cons-2>Pros and cons<a hidden class=anchor aria-hidden=true href=#pros-and-cons-2>#</a></h3><p>The main benefit of this tool is that it’s essentially just a Git wrapper. Its
+main drawback is that it’s just a Git wrapper. On a more serious note, if
+you&rsquo;re familiar with Git, you’ll automatically know how to use YADM, but there
+are definitely more user-friendly options out there.</p><p>Another minor nitpick is that if your dotfiles repository includes a README, it
+will clutter up your home directory. I’ve found a potential solution <a href=https://github.com/yadm-dev/yadm/issues/93#issuecomment-582585718>on
+GitHub</a>, but
+I haven’t managed to implement it yet. I might write a short follow-up post
+about it once I get it to work.</p><h2 id=chezmoi>Chezmoi<a hidden class=anchor aria-hidden=true href=#chezmoi>#</a></h2><p>Chezmoi is a tool written in Go specifically designed for (quoting their
+homepage) managing your dotfiles across multiple diverse machines,
+securely. It&rsquo;s very easy to use and extremely well documented, so I
+will you refer you to the official <a href=https://www.chezmoi.io/quick-start/>quick
+start</a> guide.</p><p>This tool creates a copy of the files you want to track to the
+<code>.local/share/chemoiz</code> directory, which you can reach via the <code>chezmoi cd</code>
+command. There are several ways to <a href=https://www.chezmoi.io/user-guide/frequently-asked-questions/usage/#how-do-i-edit-my-dotfiles-with-chezmoi>edit
+files</a>,
+but the two main strategies are either to use the <code>chezmoi edit</code> command, or to
+edit the original file and then add it back with the <code>chezmoi add</code> command.</p><p>Where Chezmoi really shine is managing dotifiles <a href=https://www.chezmoi.io/user-guide/manage-machine-to-machine-differences/>across multiple
+machines</a>
+running different operating systems. Also, like YADM, it provides
+<a href=https://www.chezmoi.io/user-guide/use-scripts-to-perform-actions/>scripts</a>
+that can run when certain commands are executed and
+<a href=https://www.chezmoi.io/user-guide/encryption/>encryption</a> to protect secrets.
+Again, I haven&rsquo;t tested any of these more advanced features as they go beyond
+my current needs.</p><h3 id=ignoring-files-1>Ignoring files<a hidden class=anchor aria-hidden=true href=#ignoring-files-1>#</a></h3><p>To tell Chezmoi to <a href=https://www.chezmoi.io/reference/special-files/chezmoiignore/>ignore specific files or
+directories</a>,
+you can either use <code>.chezmoiignore</code> files, which work almost like <code>.gitignore</code>
+files except for some minor differences around pattern matching.</p><p>A <code>.chezmoiignore</code> located in a directory will only be applied from that
+directory downwards (just like YADM). Alternatively, you can have a global
+<code>.chezmoiignore</code> by putting it in the Chezmoi directory. Compared to YADM, this
+has the advantage of not cluttering your home directory with a <code>.gitignore</code>
+file.</p><h3 id=pros-and-cons-3>Pros and cons<a hidden class=anchor aria-hidden=true href=#pros-and-cons-3>#</a></h3><p>Chezmoi has a lot going for it, starting with great documentation and a very
+active community. It&rsquo;s probably the most user-friendly and feature-rich tool on
+this list, so if you need the advanced features it offers or just want to go
+with the safest option, this is probably it.</p><p>If I had to find a downside, it would probably be the renaming of files with
+the <code>dot_</code> prefix. Similar to GNU Stow, this forces anyone who wants to use
+your dotfiles to install it. The advantage here is that, since the dotfiles are
+actual files rather than symlinks, you can stop using Chezmoi at any point
+without needing to take any further action.</p><h2 id=conclusion>Conclusion<a hidden class=anchor aria-hidden=true href=#conclusion>#</a></h2><p>As spoiled in the section about it, I’ve already started using YADM because it
+seemed like the most minimal solution that doesn’t require me to manually
+manage a bare Git repository, which felt a bit hacky. I have a natural tendency
+to avoid bloat and prefer the most minimal option available, even if it
+requires sacrificing some user-friendliness. After all, I use Arch for a
+reason.</p><p>Chezmoi feels a bit overkill for the task at hand—at least in my current
+situation, where I simply need to manage the dotfiles on my laptop. That said,
+I can see myself adopting this tool when my setup becomes more complex,
+hopefully in the not-too-distant future.</p></div><footer class=post-footer><ul class=post-tags><li><a href=http://gbergatto.github.io/tags/dotfiles/>Dotfiles</a></li></ul></footer></article></main><footer class=footer><span>&copy; 2024 <a href=http://gbergatto.github.io/>GBergatto</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script></body></html>
