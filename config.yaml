@@ -12,6 +12,7 @@ params:
   homeInfoParams:
     Title: Hi there
     Content: Welcome to my blog
+  ShowToc: true
 
   # https://github.com/adityatelange/hugo-PaperMod/wiki/Features#home-info-mode
   socialIcons: # optional
