@@ -1,5 +1,5 @@
 baseURL: 'http://gbergatto.github.io/'
-languageCode: en-us
+locale: en-us
 title: GBergatto
 theme: PaperMod
 
@@ -10,14 +10,18 @@ buildExpired: false
 
 params:
   homeInfoParams:
-    Title: Hi there
-    Content: Welcome to my blog
+    Title: Shining light into black boxes
+    Content: Exploring the layers beneath the abstractions we take for granted.
   ShowToc: true
 
   # https://github.com/adityatelange/hugo-PaperMod/wiki/Features#home-info-mode
-  socialIcons: # optional
+  socialIcons:
         - name: "github"
           url: "https://github.com/GBergatto"
+        - name: "linkedin"
+          url: "https://www.linkedin.com/in/gbergatto/"
+        - name: "cv"
+          url: "/files/cv.pdf"
         - name: "Rss"
           url: "https://gbergatto.github.io/index.xml"
   assets:
